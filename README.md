@@ -23,3 +23,6 @@ update(state, dt) : new_state
 render(state, dt) : undefined
 
 You can use all browserify compatible libraries.
+
+P.S.
+There is a mori (immutable data structures) library included 'cause I'm going to use it for Bret Victor's kind of stuff.
