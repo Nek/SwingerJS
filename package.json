@@ -1,0 +1,21 @@
+{
+  "name": "socketio-hotswap",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "PROPRIETARY",
+  "dependencies": {
+    "socket.io": "~1.0.4",
+    "express": "~4.4.1",
+    "mori": "~0.2.6"
+  },
+  "devDependencies": {
+    "gulp": "~3.7.0",
+    "gulp-browserify": "~0.5.0",
+    "gulp-rename": "~1.2.0"
+  }
+}
