@@ -1,6 +1,7 @@
 var gulp = require('gulp');
 var browserify = require('gulp-browserify');
 var rename = require('gulp-rename');
+var concat = require('gulp-concat');
 
 var socket = null;
 
@@ -16,7 +17,8 @@ gulp.task('client', function() {
 });
 
 gulp.task('game', function() {
-    return gulp.src('game.js')
+    return gulp.src(['game.js', 'magic.js'])
+    .pipe(concat('game.js'))
     .pipe(browserify({
         insertGlobals : false,
         debug : false
