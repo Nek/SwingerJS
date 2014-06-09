@@ -16,17 +16,7 @@ gulp.task('client', function() {
     .pipe(gulp.dest('./public/js'));
 });
 
-gulp.task('game', function() {
-    return gulp.src(['game.js', 'magic.js'])
-    .pipe(concat('game.js'))
-    .pipe(browserify({
-        insertGlobals : false,
-        debug : false
-    }))
-    .pipe(gulp.dest('./public/js'));
-});
-
-gulp.task('reloader', function() {
+gulp.task('start-reload-server', function() {
     var express = require('express');
     var app = express();
     var router = express.Router();
@@ -46,10 +36,32 @@ gulp.task('reloader', function() {
 
 })
 
-gulp.task('reload', ['game'], function() {
+gulp.task('reload', function() {
     if (socket !== null) io.emit('reload', {});
 })
 
-gulp.task('watch', ['reloader'], function() {
-  gulp.watch('game.js', ['reload']);
+var util = require("gulp-util")
+var plumber = require("gulp-plumber")
+var tap = require("gulp-tap")
+var opts = {watch:true};
+var bundler;
+
+var source = require('vinyl-source-stream');
+var watchify = require('watchify')
+
+gulp.task('watch', ['start-reload-server'], function() {
+    gulp.watch('./public/js/game.js', ['reload']);
+    var bundler = watchify('./game.js');
+    bundler.on('update', rebundle);
+    bundler.on('error', function(){
+        util.error('Syntax error');
+    })
+
+    function rebundle() {
+        return bundler.bundle()
+            .pipe(source('game.js'))
+            .pipe(gulp.dest('./public/js/'));
+    }
+
+    return rebundle();
 });
