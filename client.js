@@ -10,17 +10,30 @@ var state;
 
 var ctx = document.getElementById("canv").getContext('2d');
 
+document.addEventListener("keydown", pressKey);
+document.addEventListener("keyup", releaseKey);
+
+var input = _.set();
+
+function pressKey(e) {
+    input = _.conj(input, e.keyCode);
+}
+
+function releaseKey(e) {
+    input = _.disj(input, e.keyCode);
+}
+
 window.reloaded = function(logic) {
-    console.log('reloaded');
+    console.log('game.js reloaded.');
     cancelAnimationFrame(id);
 
     if (state === undefined) {
         state = logic.init();
     }
 
-    var loop = function(dt) {
-        state = logic.update(state, dt);
-        logic.draw(state, ctx, dt);
+    var loop = function(t) {
+        state = logic.update(state, input, t);
+        logic.draw(state, ctx, t);
         id = requestAnimationFrame(loop);
     };
 
@@ -40,4 +53,4 @@ function loadScript(scriptName) {
     docHeadObj.appendChild(dynamicScript);
 }
 
-console.log("ENGINE");
+console.log("Engine loaded.");
